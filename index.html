@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>واجهة ثابتة</title>
+    <style>
+        /* إلغاء أي هوامش ومنع التمرير في الصفحة بالكامل */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* منع التمرير العمودي والأفقي نهائياً */
+            background-color: #212470; /* لون الخلفية كما في الصورة */
+            position: fixed; /* تثبيت الجسم لمنع الاهتزاز في بعض المتصفحات */
+        }
+
+        /* الحاوية الرئيسية */
+        .full-screen-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative; /* ضروري لتموضع الزر فوق الصورة */
+        }
+
+        /* تنسيق الصورة لتكون خلفية ثابتة تماماً */
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            /* جعل الصورة تظهر بكامل حدودها من الأعلى */
+            background-image: url('1.jpg'); 
+            background-size: contain; 
+            background-position: top center;
+            background-repeat: no-repeat;
+            
+            /* منع سحب الصورة أو التفاعل معها */
+            user-select: none;
+            -webkit-user-drag: none;
+            /* تم إزالة pointer-events: none للسماح بالتفاعل مع الحاوية والزر */
+        }
+
+        /* تنسيق الزر الشفاف تماماً */
+        .invisible-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* للمنتصف تماماً */
+            width: 200px;  /* يمكنك تكبير أو تصغير مساحة النقر من هنا */
+            height: 100px; /* يمكنك تكبير أو تصغير مساحة النقر من هنا */
+            background: transparent; /* شفاف تماماً */
+            border: none;           /* بلا حدود */
+            outline: none;          /* بلا إطار تركيز */
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent; /* يمنع ظهور اللون الأزرق عند النقر في الهواتف */
+        }
+
+        /* دعم العرض على الكمبيوتر ليبقى بشكل هاتف */
+        @media (min-width: 500px) {
+            body {
+                background-color: #000;
+            }
+            .full-screen-container {
+                width: 450px;
+                height: 100vh;
+                margin: 0 auto;
+                box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            }
+        }
+    </style>
+</head>
+<body scroll="no">
+
+    <div class="full-screen-container">
+        <div id="main-bg" class="bg-image"></div>
+        
+        <button class="invisible-button" onclick="changeImage()"></button>
+    </div>
+
+    <script>
+        // وظيفة تغيير الصورة عند النقر على الزر
+        function changeImage() {
+            document.getElementById('main-bg').style.backgroundImage = "url('2.jpg')";
+        }
+
+        // كود إضافي لضمان منع التمرير باللمس على الهواتف
+        document.addEventListener('touchmove', function(e) {
+            // السماح بالنقر ومنع السحب فقط
+            if (e.target.tagName !== 'BUTTON') {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>
